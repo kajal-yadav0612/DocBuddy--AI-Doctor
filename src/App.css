@@ -1,0 +1,183 @@
+
+/* General styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display:flex;
+  font-family: 'Arial', sans-serif;
+  background: #121212; /* Dark theme */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden; /* Prevent body scrolling */
+  flex-direction: column; /* Aligning content vertically */
+}
+
+/* Main chat container */
+.app-container {
+  max-width: 550px;
+  width: 110%;
+  height:98vh;
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 0 20px 20px; /* Remove extra padding */
+  position: relative;
+}
+
+/* Chatbot icon (Fixed at top center) */
+.chatbot-icon-wrapper {
+  position: fixed;
+  top: 10px; /* Adjusted to be closer to the top */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.chatbot-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* AI Doctor logo text */
+.ai-doctor-logo {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 0.5px;
+  color: #ebe2e2;
+  text-transform: uppercase;
+}
+
+/* Chat window (Starts just below the icon) */
+.chat-window {
+  flex-grow: 1;
+  width: 98%;
+  height:80% ;
+  overflow-y: auto;
+  padding: 10px 30px; /* Reduced padding for closer alignment */
+  background: #222;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: calc(80vh - 120px); /* Ensuring auto-scroll without overlap */
+  scrollbar-width: thin;
+  scrollbar-color: #666 #222;
+  display: flex;
+  flex-direction: column;
+  margin-top: 90px; /* Ensure chat starts just below the icon */
+}
+
+/* Custom scrollbar */
+.chat-window::-webkit-scrollbar {
+  width: 8px;
+  background-color: #1f1f1f;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background-color: #1f1f1f;
+  border-radius: 4px;
+}
+
+/* Messages */
+.user-box, .bot-box {
+  max-width: 75%;
+  margin: 8px 0; /* Reduce margin to remove extra gaps */
+  padding: 12px;
+  border-radius: 18px;
+  position: relative;
+  font-size: 14px;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+/* User message (Left aligned) */
+.user-box {
+  background: #565;
+  color: white;
+  align-self: flex-start;
+  border-top-left-radius: 0;
+}
+
+/* Bot message (Right aligned) */
+.bot-box {
+  background: #333;
+  color: white;
+  align-self: flex-end;
+  border-top-right-radius: 0;
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 12px;
+  color: white;
+  text-align: right;
+  margin-top: 5px;
+}
+
+/* Chat input area */
+.chat-input {
+  flex-grow:1;
+  width:92%; /* Ensure it does not exceed container width */
+  padding: 35px;
+  height : 12% ;
+  font-size: 16px;
+  border-radius: 25px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: white;
+  outline: none;
+  transition: border-color 0.3s ease;
+  resize:none;
+  overflow:hidden;
+  margin: 10px 20px;
+}
+
+.chat-input::-webkit-scrollbar{
+display:none;
+}
+.chat-input:focus {
+  border-color: #111;
+}
+/* Chat send button */
+.chat-button {
+  margin-top :0.5px;
+  width: 42%;
+  background-color: #565;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: none;
+  margin-left: 160px; 
+}
+
+
+.chat-button:hover {
+  background-color:#564;
+  transform :scale(1.1);
+}
+@keyframes hoverEffect {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
