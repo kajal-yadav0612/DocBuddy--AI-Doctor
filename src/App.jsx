@@ -2,16 +2,43 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import chatbotIcon from './assets/chatbot.png';
+import { FaMicrophone } from 'react-icons/fa';
+
 
 function App() {
   const [question, setQuestion] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [isChatting, setIsChatting] = useState(false);
   const chatWindowRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
+
 
   // Function to get current time
   const getCurrentTime = () => {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+   // Function to handle Speech-to-Text (User Voice Input)
+   const startListening = () => {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;  // Ensures that results are not interim, but final
+    recognition.onstart = () => {
+      setIsListening(true);  // Update state to indicate the system is listening
+    };
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setQuestion(transcript); // Set the recognized speech as input
+      generateAnswer(transcript); // Automatically send the recognized speech as a question
+    };
+    recognition.onend = () => {
+      setIsListening(false);  // Reset the listening state when recognition ends
+    };
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event);
+      setIsListening(false);  // Reset the listening state if an error occurs
+    };
+    recognition.start(); // Start listening
   };
 
 async function generateAnswer() {
@@ -48,7 +75,7 @@ async function generateAnswer() {
 
   try {
     const response = await axios({
-      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=YOUR_API_KEY,
+      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyC8mn1Yy4SZ4V52MuK9u_4VFP4YV9TKEtI',
       method: 'post',
       data: {
         contents: [{ parts: [{ text: prompt }] }],
@@ -115,6 +142,11 @@ return (
         <button className="chat-button" onClick={generateAnswer} disabled={isChatting}>
         {isChatting ? 'Thinking...' : 'Ask DocBuddy'}
       </button>
+      <button className="mic-button" onClick={startListening} disabled={isListening}>
+          {isListening ? 'Listening...' :""}
+          <FaMicrophone className="mic-icon" />
+        </button>
+        
     </div>
   </div>
 );
