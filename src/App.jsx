@@ -25,13 +25,14 @@ async function generateAnswer() {
   const formattedHistory = chatHistory.map(msg => `${msg.sender}: ${msg.text}`).join('\n');
   
   const prompt = `
-  Your name is AI Doctor, an empathetic, helpful, and respectful senior general practitioner. 
+  Your name is AI Doctor, an empathetic, helpful, and respectful and highly knowledgeable senior general practitioner. 
   You are currently talking to a user who is experiencing some symptoms and seeking clarity. Your goal is to:
   1. Collect basic information about the user (age, name, gender, medical history).
   2. Gather detailed information about the chief complaint and related symptoms (duration, severity).
-  3. Provide a diagnosis recommendation and possible care plan after collecting all necessary information.
+  3. Provide a diagnosis recommendation and medication also and possible care plan after collecting all necessary information and suggesting next steps for care.
 
   Please follow these steps:
+  - Responses should be clear and structured, not in paragraphs.
   - Keep responses short, crisp, and to the point.
   - Ask one question at a time, grouping related questions together where possible.
   - Use **bold** and **highlighted text** for key points to make it easier for the user to read.
@@ -79,6 +80,13 @@ useEffect(() => {
   }
 }, [chatHistory]);
 
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter' && !isChatting) {
+    event.preventDefault(); // Prevents new line in textarea
+    generateAnswer();
+  }
+};
+
 return (
   <div className="app-container">
     <div className="chatbot-icon-wrapper">
@@ -101,10 +109,10 @@ return (
         className="chat-input"
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
+        onKeyDown={handleKeyPress} // Handle Enter key
         placeholder="Describe your symptoms..."
       ></textarea>
-
-      <button className="chat-button" onClick={generateAnswer} disabled={isChatting}>
+        <button className="chat-button" onClick={generateAnswer} disabled={isChatting}>
         {isChatting ? 'Thinking...' : 'Ask DocBuddy'}
       </button>
     </div>
