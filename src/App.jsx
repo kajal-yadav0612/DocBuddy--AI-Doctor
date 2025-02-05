@@ -11,6 +11,7 @@ function App() {
   const [isChatting, setIsChatting] = useState(false);
   const chatWindowRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
+  const [useVoiceResponse, setUseVoiceResponse] = useState(false);
 
 
   // Function to get current time
@@ -25,6 +26,7 @@ function App() {
     recognition.interimResults = false;  // Ensures that results are not interim, but final
     recognition.onstart = () => {
       setIsListening(true);  // Update state to indicate the system is listening
+      setUseVoiceResponse(true);
     };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -52,7 +54,7 @@ async function generateAnswer() {
   const formattedHistory = chatHistory.map(msg => `${msg.sender}: ${msg.text}`).join('\n');
   
   const prompt = `
-  Your name is AI Doctor, an empathetic, helpful, and respectful and highly knowledgeable senior general practitioner. 
+  Your name is DocBuddy, an empathetic, helpful, and respectful and highly knowledgeable senior general practitioner. 
   You are currently talking to a user who is experiencing some symptoms and seeking clarity. Your goal is to:
   1. Collect basic information about the user (age, name, gender, medical history).
   2. Gather detailed information about the chief complaint and related symptoms (duration, severity).
@@ -83,6 +85,8 @@ async function generateAnswer() {
     });
 
     let botResponse = response.data.candidates[0].content.parts[0].text;
+    // Remove any repeated "DocBuddy:" at the start of the response
+    botResponse = botResponse.replace(/^DocBuddy[:,]? /i, '');
     botResponse = botResponse
       .replace(/\n\n/g, '\n- ') // Convert new lines into bullet points
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Ensure bold formatting remains intact
@@ -92,6 +96,10 @@ async function generateAnswer() {
     const botMessage = { sender: 'DocBuddy', text: botResponse, time: getCurrentTime() };
     setChatHistory((prevHistory) => [...prevHistory, botMessage]);
     setIsChatting(false);
+    if (useVoiceResponse) {
+      speak(botResponse);
+      setUseVoiceResponse(false); // Reset after speaking
+    }
   } catch (error) {
     setChatHistory((prevHistory) => [
       ...prevHistory,
@@ -101,10 +109,43 @@ async function generateAnswer() {
     setIsChatting(false);
   }
 }
+const speak = (text) => {
+  speechSynthesis.cancel();  // Stop any ongoing speech
+  setTimeout(() => {
+  const utterance = new SpeechSynthesisUtterance(text.replace(/<\/?[^>]+(>|$)/g, "") .replace(/\*/g," "));
+  utterance.lang = 'en-US';
+ // Wait for voices to be loaded before selecting
+ const loadVoices = () => {
+  const voices = speechSynthesis.getVoices();
+  const preferredVoices = voices.filter(voice =>
+    voice.name.includes("Google UK English Female") || 
+    voice.name.includes("Microsoft Zira") || 
+    voice.name.includes("Microsoft Cortana")
+  );
+
+  utterance.voice = preferredVoices.length > 0 ? preferredVoices[0] :  voices.find(voice => voice.lang === 'en-US') || voices[0];    // Default to the first available voice if no female voice is found
+  utterance.rate = 1.25;
+  utterance.pitch = 1;  // Slightly increase pitch for a more natural female tone
+  utterance.volume = 1;   // Full volume
+  speechSynthesis.speak(utterance);
+
+};
+ // If voices are not yet loaded, listen for the event
+ if (speechSynthesis.getVoices().length === 0) {
+  speechSynthesis.onvoiceschanged = loadVoices;
+} else {
+  loadVoices();
+}
+}, 100); // Small delay ensures cancellation takes effect
+};
+
 useEffect(() => {
   if (chatWindowRef.current) {
     chatWindowRef.current.scrollTo({ top: chatWindowRef.current.scrollHeight, behavior: 'smooth' });
   }
+  speechSynthesis.onvoiceschanged = () => {
+    console.log("Voices loaded successfully");
+  };
 }, [chatHistory]);
 
 const handleKeyPress = (event) => {
