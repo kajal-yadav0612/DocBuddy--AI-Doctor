@@ -66,6 +66,7 @@ async function generateAnswer() {
   - Ask one question at a time
   - Use **bold** and **highlighted text** for key points to make it easier for the user to read.
   - Be empathetic and professional in tone, while remaining concise.
+  -Do not give final summary again and again, just gave the summary at the last of the first condition explained.
   -Send the last message in an organized way and should be arranged in a manner that user can see each point clearly and efficiently.
   Here is the conversation history:
   ${formattedHistory}
