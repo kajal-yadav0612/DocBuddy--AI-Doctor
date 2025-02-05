@@ -78,7 +78,7 @@ async function generateAnswer() {
 
   try {
     const response = await axios({
-      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyC8mn1Yy4SZ4V52MuK9u_4VFP4YV9TKEtI',
+      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=YOUR_API_KEY',
       method: 'post',
       data: {
         contents: [{ parts: [{ text: prompt }] }],
