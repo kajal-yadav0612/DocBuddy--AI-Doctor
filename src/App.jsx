@@ -12,6 +12,8 @@ function App() {
   const chatWindowRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
   const [useVoiceResponse, setUseVoiceResponse] = useState(false);
+  const [micActive, setMicActive] = useState(false);  // Track mic active state
+  const micButtonRef = useRef(null);  // Reference to the mic button for toggling class
 
 
   // Function to get current time
@@ -27,6 +29,10 @@ function App() {
     recognition.onstart = () => {
       setIsListening(true);  // Update state to indicate the system is listening
       setUseVoiceResponse(true);
+      setMicActive(true); // Activate mic vibration effect when listening
+      if (micButtonRef.current) {
+        micButtonRef.current.classList.add('clicked');  // Add 'clicked' class when microphone is active
+      }
     };
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -35,10 +41,18 @@ function App() {
     };
     recognition.onend = () => {
       setIsListening(false);  // Reset the listening state when recognition ends
+      setMicActive(false); // Deactivate mic vibration when listening ends
+      if (micButtonRef.current) {
+        micButtonRef.current.classList.remove('clicked');  // Remove 'clicked' class when recognition ends
+      }
     };
     recognition.onerror = (event) => {
       console.error("Speech recognition error", event);
       setIsListening(false);  // Reset the listening state if an error occurs
+      setMicActive(false); // Deactivate mic vibration on error
+      if (micButtonRef.current) {
+        micButtonRef.current.classList.remove('clicked');  // Remove 'clicked' class on error
+      }
     };
     recognition.start(); // Start listening
   };
@@ -54,7 +68,7 @@ async function generateAnswer() {
   const formattedHistory = chatHistory.map(msg => `${msg.sender}: ${msg.text}`).join('\n');
   
   const prompt = `
-  Your name is DocBuddy, an empathetic, helpful, and respectful and highly knowledgeable senior general practitioner. 
+  Your name is DocBuddy, an empathetic, helpful, and respectful and highly knowledgeable senior general practitioner doctor. 
   You are currently talking to a user who is experiencing some symptoms and seeking clarity.Your primary function is to conduct virtual patient interviews, meticulously collecting health-related information to aid in forming a differential diagnosis, which will be reviewed by a senior doctor. Your goal is to:
   1.Ensure to gather detailed descriptions by asking follow up questions from user of each related symptom , including onset, duration, triggers, and alleviation factors.
   2.Collect basic information about the user (age, name, gender, medical history).
@@ -62,12 +76,13 @@ async function generateAnswer() {
 
   Please follow these steps:
   - Responses should be clear and structured, not in paragraphs.
-  - Keep responses short, crisp, and to the point.
   - Ask one question at a time
+  - Keep responses short, crisp, and to the point.
   - Use **bold** and **highlighted text** for key points to make it easier for the user to read.
   - Be empathetic and professional in tone, while remaining concise.
   -Do not give final summary again and again, just gave the summary at the last of the first condition explained.
   -Send the last message in an organized way and should be arranged in a manner that user can see each point clearly and efficiently.
+  
   Here is the conversation history:
   ${formattedHistory}
 
@@ -145,9 +160,7 @@ useEffect(() => {
   if (chatWindowRef.current) {
     chatWindowRef.current.scrollTo({ top: chatWindowRef.current.scrollHeight, behavior: 'smooth' });
   }
-  speechSynthesis.onvoiceschanged = () => {
-    console.log("Voices loaded successfully");
-  };
+  speechSynthesis.cancel();
 }, [chatHistory]);
 
 const handleKeyPress = (event) => {
@@ -182,13 +195,22 @@ return (
         onKeyDown={handleKeyPress} // Handle Enter key
         placeholder="Describe your symptoms..."
       ></textarea>
-        <button className="chat-button" onClick={generateAnswer} disabled={isChatting}>
-        {isChatting ? 'Thinking...' : 'Ask DocBuddy'}
-      </button>
-      <button className="mic-button" onClick={startListening} disabled={isListening}>
-          {isListening ? 'Listening...' :""}
-          <FaMicrophone className="mic-icon" />
+         <button className={`mic-button ${micActive ? 'active' : ''}`}
+          onClick={() =>{
+            if (isListening) {
+              setMicActive(false); // Deactivate mic when clicked
+              if (micButtonRef.current) {
+                micButtonRef.current.classList.remove('clicked');
+              } 
+          }
+          else {
+            startListening(); // Start speech recognition
+          }
+        }}
+      >
+           <FaMicrophone />
         </button>
+     
         
     </div>
   </div>

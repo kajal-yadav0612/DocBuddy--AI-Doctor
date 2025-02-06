@@ -6,37 +6,38 @@
 }
 
 body {
-  display:flex;
   font-family: 'Arial', sans-serif;
-  background: #121212; /* Dark theme */
-  color: white;
+  background-color: #f5f5f5 ;/* light theme */
+  color: #333;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden; /* Prevent body scrolling */
-  flex-direction: column; /* Aligning content vertically */
+  overflow: hidden;
 }
 
-/* Main chat container */
+/* Main Chat Container */
 .app-container {
-  max-width: 550px;
-  width: 110%;
-  height:98vh;
-  background-color: #1f1f1f;
+  width: 219vh;;
+  height: 112vh; /* Full screen */
+  background-color: #f5f5f5;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
   flex-direction: column;
-  padding-top: 0 20px 20px; /* Remove extra padding */
+  padding: 20px;
   position: relative;
+  overflow: hidden;
+  margin-bottom: 80px; /* Space for fixed footer */
+  justify-content: flex-start;
+  align-items: center;
 }
 
-/* Chatbot icon (Fixed at top center) */
+/* Chatbot Icon Wrapper */
 .chatbot-icon-wrapper {
   position: fixed;
-  top: 10px; /* Adjusted to be closer to the top */
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -46,74 +47,66 @@ body {
 }
 
 .chatbot-icon {
-  width: 64px;
-  height: 64px;
+  width: 67px;
+  height: 67px;
+  margin-top:0.1px;
   border-radius: 50%;
-  cursor: pointer;
+  background-color: #f5f5f5;
+  border: 1px solid #242424;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
 /* AI Doctor logo text */
 .ai-doctor-logo {
   font-size: 14px;
   font-weight: bold;
-  margin-top: 0.5px;
-  color: #ebe2e2;
+  margin-top: 0.1px;
+  color: #333;
   text-transform: uppercase;
 }
 
-/* Chat window (Starts just below the icon) */
+/* Chat Window */
 .chat-window {
   flex-grow: 1;
-  width: 100%;
-  height:80% ;
+  width: 150vh;
+  height:100vh;
+  margin-left: 75px;;
   overflow-y: auto;
-  padding: 10px 30px; /* Reduced padding for closer alignment */
-  background: #222;
+  padding: 10px 30px;
+  background-color: #f5f5f5;
   border-radius: 12px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-  max-height: calc(80vh - 120px); /* Ensuring auto-scroll without overlap */
+  max-height: calc(100vh - 180px); /* Adjusting to fit below the chatbot icon */
   scrollbar-width: thin;
-  scrollbar-color: #666 #222;
+  scrollbar-color: #f5f5f5 #f5f5f5;
   display: flex;
   flex-direction: column;
-  margin-top: 90px; /* Ensure chat starts just below the icon */
-}
-
-/* Custom scrollbar */
-.chat-window::-webkit-scrollbar {
-  width: 8px;
-  background-color: #1f1f1f;
-}
-
-.chat-window::-webkit-scrollbar-thumb {
-  background-color: #1f1f1f;
-  border-radius: 4px;
+  margin-top: 150px; /* Space for chatbot icon */
+  position: relative;
 }
 
 /* Messages */
 .user-box, .bot-box {
   max-width: 75%;
-  margin: 8px 0; /* Reduce margin to remove extra gaps */
-  padding: 12px;
-  border-radius: 18px;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 16px;
   position: relative;
   font-size: 14px;
   word-wrap: break-word;
   line-height: 1.4;
 }
 
-/* User message (Left aligned) */
 .user-box {
-  background: #565;
+  background-color: rgb(83, 120, 107);
   color: white;
+  border-radius: 20px;
   align-self: flex-start;
   border-top-left-radius: 0;
 }
 
-/* Bot message (Right aligned) */
 .bot-box {
-  background: #333;
+  background-color: #888;
   color: white;
   align-self: flex-end;
   border-top-right-radius: 0;
@@ -127,50 +120,98 @@ body {
   margin-top: 5px;
 }
 
-/* Chat input area */
+/* Chat Input Wrapper */
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 1; /* Fixed at the bottom of the screen */
+  left: 0;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  z-index: 1000;
+  justify-content: center; /* Center input and mic button */
+}
+
+/* Chat Input */
 .chat-input {
-  flex-grow:1;
-  width:92%; /* Ensure it does not exceed container width */
-  padding: 35px;
-  height : 12% ;
+  flex-grow: 1;
+  margin-top: 5px;;
+  margin-left: 93px;;
+  width: 140vh;
+  padding: 12px 20px;
   font-size: 14px;
   border-radius: 25px;
-  border: 1px solid #444;
-  background: #2a2a2a;
-  color: white;
+  border: 1px solid #333;
+  background: #fafafa;
+  color: #333;
   outline: none;
+  margin-right:150px;
   transition: border-color 0.3s ease;
-  resize:none;
-  overflow:hidden;
-  margin: 10px 20px;
+  position: relative;
+  max-width: 90%; /* Adjust for screen width */
 }
 
-.chat-input::-webkit-scrollbar{
-display:none;
-}
 .chat-input:focus {
-  border-color: #111;
+  border-color: #333;
 }
-/* Chat send button */
-.chat-button {
-  margin-top :0.5px;
-  width: 42%;
-  background-color: #565;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 25px;
+
+/* Microphone Button */
+.mic-button {
+  width: 50px;  /* Adjust width for a circular button */
+  height: 50px;
+  background-color:transparent;
+  border: 0.5px solid #ccc ;
+  margin-right: 255px;
+  margin-top: 8px;;
+  padding: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: none;
-  margin-left: 150px; 
+  font-size: 1.5rem;
+  transition: border 0.3s ease;
+  position: absolute;
+  right: 10px; /* Inside the input box, on the right side */
+  outline: none;
+  box-shadow:none ; /* Removed any shadow to make it more flat */
+  border-radius: 50%; /* Remove the round boundary */
 }
 
-
-.chat-button:hover {
-  background-color:#564;
-  transform :scale(1.1);
+.mic-button.clicked {
+  border: 3cqb solid green/* Add a glowing green border around the mic */
 }
+.mic-button.clicked svg {
+  color: green !important;  /* Change the microphone icon color to green */
+}
+.mic-button svg {
+  font-size: 24px;  /* Adjust size of the microphone icon */
+  color: green;  /* Set color of the icon */
+  transition: color 0.3s ease;  /* Smooth transition for color change */
+}
+
+.mic-button.active {
+  background-color: #f0f0f0;  /* Optional: background change when active */
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #242424;
+  margin-top: 50px;
+  width: 100%;
+}
+
+/* Custom Scrollbar */
+.chat-window::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 4px;
+}
+
 @keyframes hoverEffect {
   from { transform: scale(1); }
   to { transform: scale(1.1); }
