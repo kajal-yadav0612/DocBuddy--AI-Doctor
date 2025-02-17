@@ -1,4 +1,4 @@
-/* General styling */
+/* General styling */ 
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,7 +19,7 @@ body {
 
 /* Main Chat Container */
 .app-container {
-  width: 219vh;;
+  width: 219vh;
   height: 112vh; /* Full screen */
   background-color: #f5f5f5;
   border-radius: 12px;
@@ -49,7 +49,7 @@ body {
 .chatbot-icon {
   width: 67px;
   height: 67px;
-  margin-top:0.1px;
+  margin-top: 0.1px;
   border-radius: 50%;
   background-color: #f5f5f5;
   border: 1px solid #242424;
@@ -70,18 +70,18 @@ body {
 .chat-window {
   flex-grow: 1;
   width: 150vh;
-  height:100vh;
-  margin-left: 75px;;
+  height: 100vh;
+  margin-left: 75px;
   overflow-y: auto;
   padding: 10px 30px;
   background-color: #f5f5f5;
   border-radius: 12px;
-  max-height: calc(100vh - 180px); /* Adjusting to fit below the chatbot icon */
+  max-height: calc(100vh - 180px);
   scrollbar-width: thin;
   scrollbar-color: #f5f5f5 #f5f5f5;
   display: flex;
   flex-direction: column;
-  margin-top: 150px; /* Space for chatbot icon */
+  margin-top: 150px;
   position: relative;
 }
 
@@ -125,32 +125,32 @@ body {
   display: flex;
   align-items: center;
   position: fixed;
-  bottom: 1; /* Fixed at the bottom of the screen */
+  bottom: 0;
   left: 0;
   width: 100%;
   padding: 10px 20px;
   background-color: #ffffff;
   z-index: 1000;
-  justify-content: center; /* Center input and mic button */
+  justify-content: center;
 }
 
 /* Chat Input */
 .chat-input {
   flex-grow: 1;
-  margin-top: 5px;;
-  margin-left: 93px;;
+  margin-top: 5px;
+  margin-left: 93px;
   width: 140vh;
   padding: 12px 20px;
   font-size: 14px;
   border-radius: 25px;
-  border: 1px solid #333;
+  border: 1.5px solid #333;
   background: #fafafa;
   color: #333;
   outline: none;
-  margin-right:150px;
+  margin-right: 150px;
   transition: border-color 0.3s ease;
   position: relative;
-  max-width: 90%; /* Adjust for screen width */
+  max-width: 90%;
 }
 
 .chat-input:focus {
@@ -159,21 +159,21 @@ body {
 
 /* Microphone Button */
 .mic-button {
-  width: 50px;  /* Adjust width for a circular button */
+  width: 50px;
   height: 50px;
-  background-color:transparent;
-  border: 0.5px solid #ccc ;
+  background-color: transparent;
+  border: 0.5px solid #ccc;
   margin-right: 255px;
-  margin-top: 8px;;
+  margin-top: 8px;
   padding: 14px;
   cursor: pointer;
   font-size: 1.5rem;
   transition: border 0.3s ease;
   position: absolute;
-  right: 10px; /* Inside the input box, on the right side */
+  right: 10px;
   outline: none;
-  box-shadow:none ; /* Removed any shadow to make it more flat */
-  border-radius: 50%; /* Remove the round boundary */
+  box-shadow: none;
+  border-radius: 50%;
 }
 
 .mic-button.clicked {
@@ -191,33 +191,48 @@ body {
 .mic-button.active {
   background-color: #f0f0f0;  /* Optional: background change when active */
 }
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 20px;
-  background-color: #242424;
-  margin-top: 50px;
-  width: 100%;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .app-container {
+    width: 95vw;
+    height: 95vh;
+  }
+  .chat-window {
+    width: 90vw;
+    margin-left: 0;
+  }
+  .chat-input {
+    width: 80vw;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .mic-button {
+    margin-right: 10px;
+  }
 }
 
-/* Custom Scrollbar */
-.chat-window::-webkit-scrollbar {
-  width: 8px;
-  background-color: #f5f5f5;
-}
-
-.chat-window::-webkit-scrollbar-thumb {
-  background-color: #ddd;
-  border-radius: 4px;
-}
-
-@keyframes hoverEffect {
-  from { transform: scale(1); }
-  to { transform: scale(1.1); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@media (max-width: 768px) {
+  .app-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+  }
+  .chat-window {
+    width: 100vw;
+    max-height: calc(100vh - 200px);
+    padding: 10px;
+  }
+  .chat-input-wrapper {
+    flex-direction: row;
+    padding: 5px;
+  }
+  .chat-input {
+    width: 75vw;
+    padding: 10px;
+  }
+  .mic-button {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
 }
