@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5 ;/* light theme */
+  background-color: #f5f5f5; /* light theme */
   color: #333;
   display: flex;
   flex-direction: column;
@@ -125,13 +125,17 @@ body {
   display: flex;
   align-items: center;
   position: fixed;
-  bottom: 0;
+  bottom: 20px; /* Add a gap at the bottom */
   left: 0;
   width: 100%;
   padding: 10px 20px;
   background-color: #ffffff;
   z-index: 1000;
   justify-content: center;
+}
+
+.chat-input-wrapper.mobile {
+  margin-bottom: 120px; /* Increase margin-bottom for a larger gap on mobile */
 }
 
 /* Chat Input */
@@ -177,11 +181,13 @@ body {
 }
 
 .mic-button.clicked {
-  border: 3cqb solid green/* Add a glowing green border around the mic */
+  border: 3px solid green; /* Add a glowing green border around the mic */
 }
+
 .mic-button.clicked svg {
   color: green !important;  /* Change the microphone icon color to green */
 }
+
 .mic-button svg {
   font-size: 24px;  /* Adjust size of the microphone icon */
   color: green;  /* Set color of the icon */
@@ -192,47 +198,65 @@ body {
   background-color: #f0f0f0;  /* Optional: background change when active */
 }
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .app-container {
-    width: 95vw;
-    height: 95vh;
-  }
-  .chat-window {
-    width: 90vw;
-    margin-left: 0;
-  }
-  .chat-input {
-    width: 80vw;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .mic-button {
-    margin-right: 10px;
-  }
-}
-
 @media (max-width: 768px) {
   .app-container {
-    width: 100vw;
-    height: 100vh;
+    width: 90vw;
+    height: 90vh;
     padding: 10px;
   }
   .chat-window {
-    width: 100vw;
-    max-height: calc(100vh - 200px);
+    width: 90vw;
+    max-height: calc(90vh - 250px); /* Reduce max height to allow space */
     padding: 10px;
   }
   .chat-input-wrapper {
     flex-direction: row;
     padding: 5px;
+    margin-bottom: 30px; /* Increase gap between chat input and app container */
+    position: relative;
   }
   .chat-input {
-    width: 75vw;
+    width: 70vw;
     padding: 10px;
+    padding-right: 50px; /* Space for mic button */
   }
   .mic-button {
     width: 40px;
     height: 40px;
     padding: 10px;
+    position: absolute;
+    right: 15px; /* Slightly shifted from the right */
+    left: 10px; /* Added left margin to adjust position */
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 5px;
+  }
+  .chat-window {
+    width: 100vw;
+    max-height: calc(100vh - 270px); /* Reduce max height further */
+    padding: 10px;
+  }
+  .chat-input-wrapper {
+    padding: 5px;
+    flex-direction: row;
+    margin-bottom: 50px; /* Increase gap between chat input and app container */
+    position: relative;
+  }
+  .chat-input {
+    width: 65vw;
+    padding: 8px;
+    padding-right: 45px; /* Space for mic button */
+  }
+  .mic-button {
+    width: 35px;
+    height: 35px;
+    padding: 8px;
+    position: absolute;
+   margin-left: 300px; /* Added left margin to adjust position */
   }
 }
